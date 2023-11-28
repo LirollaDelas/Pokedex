@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Pokedex</title>  
+</head>
+<body>
+    <header> 
+        <div class="cabeca">
+            <img src="./imagens/logo.png" class="logo">
+        </div>
+        <div class="borda">
+        </div>
+    </header>
+    <main>
+        <a class="nome">Digite o nome ou número do Pokemon</a>
+    <form id="search-form">
+        <div class="searchbar">
+            <input type="text" class="searchtxt" placeholder="Informe o nome ou número">
+            <button class="search-btn" id="search-button">
+                <img src="./imagens/loupe.png" alt="Lupa" height="20" width="20">
+            </button>
+            <img src="./imagens/RotomDex.png" class="dex">
+        </div>
+    </form>
+        <div id="pokemon-list" class="resultados"></div>
+    </main>
+        <footer>
+                <a>Desenvolvido por Nicolas Lirolla e Kevin</a>  
+        </footer>
+        <script> 
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.querySelector('.searchtxt');
+            const searchButton = document.getElementById('search-button');
+          
+            searchForm.addEventListener('submit', (event) => {
+                event.preventDefault(); // Evita o envio padrão do formulário
+          
+                const searchTerm = searchInput.value;
+                fetchPokemonData(searchTerm);
+            });
+          
+            searchButton.addEventListener('click', (event) => {
+                event.preventDefault(); // Impede o comportamento padrão do link
+          
+                const searchTerm = searchInput.value;
+                fetchPokemonData(searchTerm);
+            });
+          
+            async function fetchPokemonData(searchTerm) {
+                const url = `https://pokeapi.co/api/v2/pokemon/${searchTerm}`;
+          
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error('Erro na solicitação da API');
+                    }
+          
+                    const data = await response.json();
+          
+                    // Redireciona o usuário para a página de resultados com os parâmetros da pesquisa
+                   // ...
+
+// Redireciona o usuário para a página de resultados com os parâmetros da pesquisa
+    const queryParams = new URLSearchParams();
+    queryParams.set('name', data.name);
+    queryParams.set('height', data.height);
+    queryParams.set('weight', data.weight);
+    queryParams.set('sprite', data.sprites.front_default); // Adicione o sprite
+
+// Redireciona para a página de resultados com os parâmetros na URL
+    window.location.href = `results.html?${queryParams.toString()}`;
+
+// ...
+
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+</script>
+</body>
+</html>
